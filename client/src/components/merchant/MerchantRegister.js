@@ -1,6 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 
+import LocationPicker from './LocationPicker'
+import Test from './Test'
+
 const MerchantRegister = () => {
 
     const RegisterForm = {
@@ -9,6 +12,15 @@ const MerchantRegister = () => {
         margin: "auto",
         marginTop: "50px",
       };
+      const [name, setName] = useState("");
+      const [email, setEmail] = useState("");
+      const [phone, setPhone] = useState("");
+      const [city, setCity] = useState("");
+      const [state, setState] = useState("");
+      const [pincode, setPincode] = useState("");
+      const [address, setAddress] = useState("");
+      const [latitude, setLatitude] = useState("");
+      const [longitude, setLongitude] = useState("");
 
       const [merchant, setMerchant] = useState({
         name: "",
@@ -21,13 +33,46 @@ const MerchantRegister = () => {
         latitude:"",
         longitude:"",
       });
+
+      const [lng, setLng] = useState("");
+      const [lat, setLat] = useState("");
+      
+      const abcd  = (coordinates) => {
+        console.log(coordinates)
+        setLatitude(coordinates.lat);
+        setLongitude(coordinates.lng);
+      } 
     
-      const { name, email, phone, city, state, pincode, address, latitude, longitude } = merchant;
+      const onChange1 = (e) =>{
+          setName(e.target.value);
+      }
+      const onChange2 = (e) =>{
+        setEmail(e.target.value);
+    }
+    const onChange3 = (e) =>{
+      setPhone(e.target.value);
+  }
+  const onChange4 = (e) =>{
+    setCity(e.target.value);
+}
+const onChange5 = (e) =>{
+  setState(e.target.value);
+}
+const onChange6 = (e) =>{
+  setPincode(e.target.value);
+}
+
+const onChange7 = (e) =>{
+  setAddress(e.target.value);
+}
     
-      const onChange = (e) => setMerchant({ ...merchant, [e.target.name]: e.target.value });
-    
+      // useEffect(_=>console.log('useeffect mer', merchant), [merchant])
       const onSubmit = async (e) => {
         e.preventDefault();
+        //console.log(merchant)
+        
+        setMerchant({name: name, email: email, phone: phone, city: city, state: state, pincode: pincode, address: address, latitude: latitude, longitude: longitude})
+        console.log(merchant)
         const config = {
             headers: {
               "Content-Type": "application/json",
@@ -59,7 +104,7 @@ const MerchantRegister = () => {
                 type="text"
                 name="name"
                 value={name}
-                onChange={onChange}
+                onChange={onChange1}
                 required
               />
             </div>
@@ -71,7 +116,7 @@ const MerchantRegister = () => {
                 type="email"
                 name="email"
                 value={email}
-                onChange={onChange}
+                onChange={onChange2}
                 required
               />
             </div>
@@ -83,7 +128,7 @@ const MerchantRegister = () => {
                 type="text"
                 name="phone"
                 value={phone}
-                onChange={onChange}
+                onChange={onChange3}
                 required
               />
             </div>
@@ -95,7 +140,7 @@ const MerchantRegister = () => {
                 type="text"
                 name="city"
                 value={city}
-                onChange={onChange}
+                onChange={onChange4}
                 required
               />
             </div>
@@ -107,7 +152,7 @@ const MerchantRegister = () => {
                 type="text"
                 name="state"
                 value={state}
-                onChange={onChange}
+                onChange={onChange5}
                 required
               />
             </div>
@@ -119,7 +164,7 @@ const MerchantRegister = () => {
                 type="text"
                 name="pincode"
                 value={pincode }
-                onChange={onChange}
+                onChange={onChange6}
                 required
               />
             </div>
@@ -131,40 +176,21 @@ const MerchantRegister = () => {
                 type="text"
                 name="address"
                 value={address}
-                onChange={onChange}
+                onChange={onChange7}
                 required
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="latitude">Latitude</label>
-              <input
-                class="form-control"
-                id="latitude"
-                type="text"
-                name="latitude"
-                value={latitude}
-                onChange={onChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="longitude">Longitude</label>
-              <input
-                class="form-control"
-                id="longitude"
-                type="text"
-                name="longitude"
-                value={longitude}
-                onChange={onChange}
-                required
-              />
-            </div>
+            
             
             <button type="submit" className="btn btn-primary mt-3" value="Register">
               Register
             </button>
           </form>
-         
+
+          {/* Map Location Picker
+          */}
+          {/* <LocationPicker latitude = {latitude} longitude = {longitude}/> */}
+          <Test abcd={abcd}/>
         </div>
       );
 }
