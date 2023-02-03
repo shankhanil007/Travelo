@@ -89,15 +89,15 @@ def spacy_ner(text):
     places = unique_elements(places)
     return places
 
-@app.route("/entities-recognition", methods=["GET"])
+@app.route("/entities-recognition", methods=["POST"])
 def explore_city():
     data = request.get_json(force=True)
-    print(data["city_name"])
-    if "blog_link" not in data.keys():
+    print(data["city"])
+    if "link" not in data.keys() or data["link"] == "":
         # data = {"city_name": "new york"}
-        blogLinks = search_blogs(data["city_name"])
+        blogLinks = search_blogs(data["city"])
     else:
-        blogLinks = data["blog_link"]
+        blogLinks = data["link"]
     # blogLinks = links
     blog_texts = appyhub_text_extract(blogLinks)
     entities = []
@@ -106,7 +106,7 @@ def explore_city():
         entities = entities + place
 
     entities = unique_elements(entities)
-    # print(entities)
+    print(entities)
     return {"entities": entities}
 
 def main():
