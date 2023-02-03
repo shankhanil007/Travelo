@@ -97,7 +97,7 @@ def explore_city():
         # data = {"city_name": "new york"}
         blogLinks = search_blogs(data["city"])
     else:
-        blogLinks = data["link"]
+        blogLinks = [data["link"]]
     # blogLinks = links
     blog_texts = appyhub_text_extract(blogLinks)
     entities = []
