@@ -5,13 +5,13 @@ import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import Alert from "./components/layout/Alerts";
-import MerchantRegister from "./components/merchant/MerchantRegister"
+import MerchantRegister from "./components/merchant/MerchantRegister";
 
 import AuthState from "./context/auth/AuthState";
 import AlertState from "./context/alert/AlertState";
 
 const App = () => {
-  return (  
+  return (
     <AuthState>
       <AlertState>
         <Router>
@@ -22,7 +22,11 @@ const App = () => {
               <Switch>
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />
-                <Route exact path="/merchant/regsiter" component={MerchantRegister} />
+                <Route
+                  exact
+                  path="/merchant/register"
+                  component={MerchantRegister}
+                />
               </Switch>
             </div>
           </Fragment>
