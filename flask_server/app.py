@@ -2,17 +2,16 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from googlesearch import search
 import requests
-import urllib.parse
 import spacy
 import time
 import wikipedia
+import json
 
 app = Flask(__name__)
 CORS(app)
-nlp = spacy.load("en_core_web_sm")
+WIKI_REQUEST = 'http://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original&titles='
+
 links = [
-# 'https://www.tripadvisor.in/Attractions-g297672-Activities-Udaipur_Udaipur_District_Rajasthan.html',
-# 'https://www.tripadvisor.in/Attraction_Review-g297672-d324469-Reviews-City_Palace_of_Udaipur-Udaipur_Udaipur_District_Rajasthan.html',
 # 'https://www.tripadvisor.in/Attractions-g297672-Activities-c42-Udaipur_Udaipur_District_Rajasthan.html',
 # 'https://www.tripadvisor.in/Attractions-g297672-Activities-c47-t10-Udaipur_Udaipur_District_Rajasthan.html',
 # 'https://www.tourism.rajasthan.gov.in/udaipur.html',
@@ -77,7 +76,7 @@ def unique_elements(ele):
         unique_ele.append(i)
     return unique_ele
 
-def spacy_ner(text):
+def spacy_ner(text, nlp):
     text = preprocess(text)
     places = []
     doc = nlp(text)
@@ -103,8 +102,9 @@ def explore_city():
     # blogLinks = links
     blog_texts = appyhub_text_extract(blogLinks)
     entities = []
+    nlp = spacy.load("en_core_web_sm")
     for text in blog_texts:
-        place = spacy_ner(text)
+        place = spacy_ner(text, nlp)
         entities = entities + place
 
     entities = unique_elements(entities)
@@ -119,31 +119,21 @@ def explore_city():
 @app.route("/geo-details", methods=["POST"])
 def fetch_geo_details():
     details = []
-    entities = request.get_json(force=True)
-    # print(data)
-    # entities = data["entities"]
+    data = request.get_json(force=True)
+    entities = data["entities"]
     # print(entities)
     for ent in entities:
         # print(ent)
         try:
             wiki = wikipedia.page(ent + " (place)")
-            print(wiki.coordinates[0])
-            # print(wiki.title)
-            # print(wiki.url)
-            # print(wiki.content[:1000])
-            # print(wiki.images[0])
+            response  = requests.get(WIKI_REQUEST+wiki.title)
+            json_data = json.loads(response.text)
+            img_link = list(json_data['query']['pages'].values())[0]['original']['source']
             geo_dict = {}
-            # url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(ent) +'?format=json'
-            # resp = requests.get(url).json()
-            # print(response[0]["lat"])
-            # print(response[0]["lon"])
             geo_dict = {"title": wiki.title, 
                     "description": wiki.content[:1000],
-                    "image": wiki.images[0],
-                    "wiki_url": wiki.url,
-                    "latitude": wiki.coordinates[0],
-                    "longitude": wiki.coordinates[1]
-            }
+                    "image": img_link,
+                    "wiki_url": wiki.url}
             details.append(geo_dict)
         except:
             continue
