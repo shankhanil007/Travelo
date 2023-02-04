@@ -9,17 +9,30 @@ export default function Services() {
   const data = [
     {
       icon: service1,
-      title: "Get Best Prices",
+      title: "Get The Popular Options",
       subTitle:
-        "Pay through our application and save thousands and get amazing rewards.",
+        "Get to know the popular local providers while travelling",
     },
     
     {
-      icon: service4,
-      title: "Find The Best Near You",
+      icon: service2,
+      title: "Find The Best Attractions You",
       subTitle:
         "Find the best places to visit near you in a single click.",
     },
+    {
+      icon: service3,
+      title: "Plan More Efficient Trips",
+      subTitle:
+        "Get your trip route at one place in some clicks",
+    },
+    {
+      icon: service4,
+      title: "Save Time",
+      subTitle:
+        "Don't waste time in reading blogs while planning.",
+    },
+   
   ];
   return (
     <Section id="services">
