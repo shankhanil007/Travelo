@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const config = require("config");
 const { check, validationResult } = require("express-validator");
+require('dotenv').config();
+
 
 const User = require("../models/Merchant");
 const Merchant = require("../models/Merchant");
@@ -48,17 +50,18 @@ router.post(
         latitude,
         longitude,
       });
-
       await merchant.save();
-      const accountSid = 'AC1ad9e53e42e2ead3aeed5a46c917309c'; 
-      const authToken = '55ec81f90ec34777133c6aa6e87f4f44'; 
+
+     
+      const accountSid = ''; 
+      const authToken = ''; 
       const client = require('twilio')(accountSid, authToken); 
        
       client.messages 
             .create({   
               body: 'Hey, Your business is registered. You can find yourself on: ',      
               from: 'whatsapp:+14155238886',
-               to: 'whatsapp:+917990630623',
+               to: 'whatsapp:+91'+merchant.phone,
              }) 
             .then(message => console.log(message.sid)) 
             .done();
