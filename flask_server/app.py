@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from googlesearch import search
 import requests
+import urllib.parse
 import spacy
 import time
 import wikipedia
@@ -118,22 +119,31 @@ def explore_city():
 @app.route("/geo-details", methods=["POST"])
 def fetch_geo_details():
     details = []
-    data = request.get_json(force=True)
-    entities = data["entities"]
+    entities = request.get_json(force=True)
+    # print(data)
+    # entities = data["entities"]
     # print(entities)
     for ent in entities:
         # print(ent)
         try:
             wiki = wikipedia.page(ent + " (place)")
+            print(wiki.coordinates[0])
             # print(wiki.title)
             # print(wiki.url)
             # print(wiki.content[:1000])
             # print(wiki.images[0])
             geo_dict = {}
+            # url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(ent) +'?format=json'
+            # resp = requests.get(url).json()
+            # print(response[0]["lat"])
+            # print(response[0]["lon"])
             geo_dict = {"title": wiki.title, 
                     "description": wiki.content[:1000],
                     "image": wiki.images[0],
-                    "wiki_url": wiki.url}
+                    "wiki_url": wiki.url,
+                    "latitude": wiki.coordinates[0],
+                    "longitude": wiki.coordinates[1]
+            }
             details.append(geo_dict)
         except:
             continue
@@ -141,8 +151,8 @@ def fetch_geo_details():
     return details
 
 
-def main():
-    print(explore_city())
+# def main():
+#     print(explore_city())
 
 if __name__ == '__main__':
-    main()
+    app.run(host='0.0.0.0', port=8000)
