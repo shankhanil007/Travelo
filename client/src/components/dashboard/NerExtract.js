@@ -10,6 +10,7 @@ function NerExtract() {
   const { user, loadUser } = authContext;
 
   const [entities, setEntities] = useState([]);
+  const [entityDetails, setEntityDetails] = useState([]);
   const extractEntities = async (search) => {
     const config = {
       headers: {
@@ -18,11 +19,29 @@ function NerExtract() {
     };
     try {
       const res = await axios.post(
-        "http://127.0.0.1:5000/entities-recognition",
+        "http://127.0.0.1:8000/entities-recognition",
         search,
         config
       );
       setEntities(res.data.entities);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getEntityDetails = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const res = await axios.post(
+        "http://127.0.0.1:8000/geo-details",
+        entities,
+        config
+      );
+      setEntityDetails(res.data);
     } catch (err) {
       console.log(err);
     }
@@ -33,7 +52,7 @@ function NerExtract() {
       <Search extractEntities={extractEntities} />
       <DisplayEntities entities={entities} setEntities={setEntities} />
       <button
-        type="submit"
+        onClick={() => getEntityDetails()}
         class="btn btn-outline-primary"
         style={{ marginTop: "10px" }}
       >
