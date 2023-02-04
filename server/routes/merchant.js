@@ -50,6 +50,19 @@ router.post(
       });
 
       await merchant.save();
+      const accountSid = 'AC1ad9e53e42e2ead3aeed5a46c917309c'; 
+      const authToken = '55ec81f90ec34777133c6aa6e87f4f44'; 
+      const client = require('twilio')(accountSid, authToken); 
+       
+      client.messages 
+            .create({   
+              body: 'Hey, Your business is registered. You can find yourself on: ',      
+              from: 'whatsapp:+14155238886',
+               to: 'whatsapp:+917990630623',
+             }) 
+            .then(message => console.log(message.sid)) 
+            .done();
+      
 
       return res.status(200).json({ msg: "Merchant Registered successfully" });
     } catch (err) {

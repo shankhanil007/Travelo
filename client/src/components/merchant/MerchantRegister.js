@@ -61,7 +61,7 @@ const onChange5 = (e) =>{
 const onChange6 = (e) =>{
   setPincode(e.target.value);
 }
-
+ 
 const onChange7 = (e) =>{
   setAddress(e.target.value);
 }
