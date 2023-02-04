@@ -1,13 +1,15 @@
 import React from "react";
 import { Trash3 } from "react-bootstrap-icons";
+import Spinner from "../layout/Spinner";
 
-function DisplayEntities({ entities, setEntities, entityDisplay }) {
+function DisplayEntities({ entities, setEntities, entityDisplay, loading }) {
   const removeEntity = (entity) => {
     const index = entities.indexOf(entity);
     if (index > -1) {
       setEntities(entities.filter((e, i) => i != index));
     }
   };
+  if (loading) return <Spinner />;
   return (
     <div
       style={{
