@@ -19,7 +19,7 @@ const App = () => {
         <Router>
           <Fragment>
             {/* <Navbar /> */}
-            <div className="container">
+            <div className="container" >
               <Alert />
               <Switch>
                 <Route exact path="/" component={Landing} />

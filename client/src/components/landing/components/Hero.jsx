@@ -16,7 +16,7 @@ export default function Hero() {
       <div className="content">
         <div className="title">
           <h1>TRAVEL TO EXPLORE</h1>
-          <p>
+          <p style={{padding:"0 20vw", marginTop:"60px"}}>
             A one stop platform for tourists and local businesses. Tourists with wanderlust can plan their way ahead without numbing their minds with countless blogs, meanwhile, a local business can get the best of his business by listing themselves on Travelo!
           </p>
         </div>
@@ -33,7 +33,7 @@ export default function Hero() {
             <label htmlFor="">Check-out</label>
             <input type="date" />
           </div> */}
-          <button onClick={navigateTo1}>Explore Now</button>
+          <button onClick={navigateTo1} style={{marginRight:"20px"}}>Explore Now</button>
           <br/>
           <button onClick={navigateTo2}> Host your business </button>
         </div>

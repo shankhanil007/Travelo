@@ -20,6 +20,7 @@ function NerExtract() {
   const [city, setCity] = useState("");
   const [entities, setEntities] = useState([]);
   const [entityDetails, setEntityDetails] = useState([]);
+  const [entityDisplay, setEntityDisplay] = useState(false)
   const extractEntities = async (search) => {
     setCity(search.city);
     const config = {
@@ -34,6 +35,7 @@ function NerExtract() {
         config
       );
       setEntities(res.data.entities);
+      setEntityDisplay(true)
     } catch (err) {
       console.log(err);
     }
@@ -52,6 +54,7 @@ function NerExtract() {
         config
       );
       setEntityDetails(res.data);
+      
       console.log(entityDetails);
       childRef.current.getAlert();
     } catch (err) {
@@ -68,23 +71,24 @@ function NerExtract() {
   return (
     <>
       <Navbar />
-      <Search extractEntities={extractEntities} setCity={setCity} />
+      <Search extractEntities={extractEntities} setCity={setCity} entityDisplay={entityDisplay} />
       <DisplayEntities entities={entities} setEntities={setEntities} />
       <button
         onClick={() => getEntityDetails()}
         class="btn btn-outline-primary"
-        style={{ marginTop: "10px" }}
+        style={{ marginTop: "10px", display:  entityDisplay ? 'block' : 'none', marginTop:"40px"}}
       >
         Get Coordinates
       </button>
-      <Map ref={childRef} entityDetails={entityDetails} city={city} />
+      
       <button
         onClick={() => loadLocalBusiness()}
         class="btn btn-outline-primary"
-        style={{ marginTop: "10px" }}
+        style={{ marginTop: "10px", display:  entityDisplay ? 'block' : 'none', marginTop:"40px"}}
       >
         Load Local Business
       </button>
+      <Map ref={childRef} entityDetails={entityDetails} city={city} />
     </>
   );
 }

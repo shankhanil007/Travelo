@@ -19,11 +19,11 @@ const Navbar = ({ title, icon }) => {
 
   const authLinks = (
     <Fragment>
-      <li className="nav-link">Hello {user && user.name}</li>
+      <li className="nav-link" style={{color:"black",fontWeight: "600"}}>Hello {user && user.name}</li>
       <li>
         <Link onClick={onLogout} to="#!" className="nav-link">
           <i className="fas fa-sign-out-alt" />{" "}
-          <span className="hide-sm">Logout</span>
+          <span className="hide-sm" style={{color:"black",fontWeight: "600"}}>Logout</span>
         </Link>
       </li>
     </Fragment>
@@ -84,7 +84,7 @@ Navbar.propTypes = {
 };
 
 Navbar.defaultProps = {
-  title: "Code For Good",
+  title: "Travelo",
   icon: "fas fa-id-card-alt",
 };
 

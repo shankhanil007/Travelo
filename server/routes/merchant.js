@@ -32,6 +32,7 @@ router.post(
       description,
       latitude,
       longitude,
+      url
     } = req.body;
 
     try {
@@ -53,6 +54,7 @@ router.post(
         description,
         latitude,
         longitude,
+        url
       });
       await merchant.save();
 

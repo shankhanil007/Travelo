@@ -150,7 +150,7 @@ const Map = forwardRef((props, ref) => {
     <>
       <div
         ref={(el) => (mapContainer.current = el)}
-        style={{ height: "150vh", marginTop: "100px", marginBottom: "100px" }}
+        style={{ height: "150vh", marginTop: "20px", marginBottom: "50px" }}
       />
     </>
   );

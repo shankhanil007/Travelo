@@ -1,7 +1,7 @@
 import React from "react";
 import { Trash3 } from "react-bootstrap-icons";
 
-function DisplayEntities({ entities, setEntities }) {
+function DisplayEntities({ entities, setEntities,entityDisplay }) {
   const removeEntity = (entity) => {
     const index = entities.indexOf(entity);
     if (index > -1) {
@@ -9,6 +9,8 @@ function DisplayEntities({ entities, setEntities }) {
     }
   };
   return (
+    <div style={{padding: "15px", marginTop: "50px", display:  entityDisplay ? 'block' : 'none'}}>
+    <h3 className="row">Places to visit</h3>
     <div className="row" style={{ marginTop: "50px" }}>
       {entities.map((entity) => (
         <div className="col-lg-3 col-md-6 " style={{ marginTop: "10px" }}>
@@ -32,7 +34,9 @@ function DisplayEntities({ entities, setEntities }) {
             </div>
           </div>
         </div>
+      
       ))}
+    </div>
     </div>
   );
 }
