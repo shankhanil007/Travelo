@@ -23,16 +23,15 @@ const Map = forwardRef((props, ref) => {
   const [map, setMap] = useState(null);
 
   const mapContainer = useRef(null);
+  mapboxgl.accessToken =
+    "pk.eyJ1Ijoia2VzaGcwOTEyIiwiYSI6ImNsZGRlMjNmYzAycWIzb3MwdGxhaTd2aWUifQ.Ah1yPzjAal0Ez-QZC36M2A";
 
-  useEffect(() => {
-    mapboxgl.accessToken =
-      "pk.eyJ1Ijoia2VzaGcwOTEyIiwiYSI6ImNsZGRlMjNmYzAycWIzb3MwdGxhaTd2aWUifQ.Ah1yPzjAal0Ez-QZC36M2A";
-
-    const initializeMap = ({ setMap, mapContainer }) => {
+  useImperativeHandle(ref, () => ({
+    getAlert() {
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         style: "mapbox://styles/mapbox/streets-v11", // stylesheet location
-        center: [0, 0],
+        center: [-75.3999866894848, 42.60101025299741],
         zoom: 5,
       });
 
@@ -42,26 +41,24 @@ const Map = forwardRef((props, ref) => {
       });
 
       // Creates new directions control instance
-      const directions = new MapboxDirections({
+      var directions = new MapboxDirections({
         accessToken: mapboxgl.accessToken,
         unit: "metric",
         profile: "mapbox/driving",
         interactive: false,
       });
-    };
 
-    if (!map) initializeMap({ setMap, mapContainer });
-  }, [map]);
+      // Integrates directions control with map
+      map.addControl(directions, "top-left");
+      //add waypoints
+      // map.on("style.load", function () {
+      //   directions.setOrigin([76.68346, 28.99329]);
+      //   directions.addWaypoint(0, [77.67999, 29.00393]);
+      //   directions.addWaypoint(1, [79.67628, 29.0308]);
+      //   // directions.addWaypoint(2, [79.49764, 28.60245]);
+      //   directions.setDestination([76.68346, 28.99329]);
+      // });
 
-  useImperativeHandle(ref, () => ({
-    getAlert() {
-      // Creates new directions control instance
-      const directions = new MapboxDirections({
-        accessToken: mapboxgl.accessToken,
-        unit: "metric",
-        profile: "mapbox/driving",
-        interactive: false,
-      });
       const placesCoords = [];
       props.entityDetails.forEach(function (entry) {
         var coordinates = [];
@@ -70,12 +67,12 @@ const Map = forwardRef((props, ref) => {
         placesCoords.push(coordinates);
       });
       console.log(placesCoords);
-
       for (var i = 0; i < placesCoords.length; i++) {
         directions.addWaypoint(i, placesCoords[i]);
+        var k = i + 1;
         var el = document.createElement("div");
         el.className = "marker";
-        el.innerHTML = "<span><b>" + (i + 1) + "</b></span>";
+        el.innerHTML = "<span><b>" + k + "</b></span>";
         new mapboxgl.Marker(el)
           .setLngLat(placesCoords[i])
           .setPopup(
@@ -92,6 +89,12 @@ const Map = forwardRef((props, ref) => {
               .setMaxWidth("400px")
           )
           .addTo(map);
+
+        map.on("style.load", function () {
+          directions.setOrigin(placesCoords[0]);
+
+          directions.setDestination(placesCoords[placesCoords.length - 1]);
+        });
       }
     },
 
@@ -150,7 +153,11 @@ const Map = forwardRef((props, ref) => {
     <>
       <div
         ref={(el) => (mapContainer.current = el)}
-        style={{ height: "150vh", marginTop: "20px", marginBottom: "50px" }}
+        style={{
+          height: "150vh",
+          marginTop: "20px",
+          marginBottom: "50px",
+        }}
       />
     </>
   );
