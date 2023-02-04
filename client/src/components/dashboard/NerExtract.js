@@ -15,9 +15,11 @@ function NerExtract() {
   const authContext = useContext(AuthContext);
   const { user, loadUser } = authContext;
 
+  const [city, setCity] = useState("");
   const [entities, setEntities] = useState([]);
   const [entityDetails, setEntityDetails] = useState([]);
   const extractEntities = async (search) => {
+    setCity(search.city);
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -55,11 +57,15 @@ function NerExtract() {
     }
   };
 
+  const loadLocalBusiness = async () => {
+    childRef.current.getLocalBusinessDetails();
+  };
+
   const childRef = useRef();
 
   return (
     <>
-      <Search extractEntities={extractEntities} />
+      <Search extractEntities={extractEntities} setCity={setCity} />
       <DisplayEntities entities={entities} setEntities={setEntities} />
       <button
         onClick={() => getEntityDetails()}
@@ -68,7 +74,14 @@ function NerExtract() {
       >
         Get Coordinates
       </button>
-      <Map ref={childRef} entityDetails={entityDetails} />
+      <Map ref={childRef} entityDetails={entityDetails} city={city} />
+      <button
+        onClick={() => loadLocalBusiness()}
+        class="btn btn-outline-primary"
+        style={{ marginTop: "10px" }}
+      >
+        Load Local Business
+      </button>
     </>
   );
 }
