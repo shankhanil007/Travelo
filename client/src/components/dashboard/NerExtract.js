@@ -10,17 +10,16 @@ import Search from "./Search";
 import AuthContext from "../../context/auth/authContext";
 import DisplayEntities from "./DisplayEntities";
 import Map from "./Map";
-import Navbar from '../layout/Navbar'
+import Navbar from "../layout/Navbar";
 
 function NerExtract() {
-  
   const authContext = useContext(AuthContext);
   const { user, loadUser } = authContext;
 
   const [city, setCity] = useState("");
   const [entities, setEntities] = useState([]);
   const [entityDetails, setEntityDetails] = useState([]);
-  const [entityDisplay, setEntityDisplay] = useState(false)
+  const [entityDisplay, setEntityDisplay] = useState(false);
   const extractEntities = async (search) => {
     setCity(search.city);
     const config = {
@@ -35,7 +34,7 @@ function NerExtract() {
         config
       );
       setEntities(res.data.entities);
-      setEntityDisplay(true)
+      setEntityDisplay(true);
     } catch (err) {
       console.log(err);
     }
@@ -54,7 +53,7 @@ function NerExtract() {
         config
       );
       setEntityDetails(res.data);
-      
+
       console.log(entityDetails);
       childRef.current.getAlert();
     } catch (err) {
@@ -71,24 +70,45 @@ function NerExtract() {
   return (
     <>
       <Navbar />
-      <Search extractEntities={extractEntities} setCity={setCity} entityDisplay={entityDisplay} />
-      <DisplayEntities entities={entities} setEntities={setEntities} />
-      <button
-        onClick={() => getEntityDetails()}
-        class="btn btn-outline-primary"
-        style={{ marginTop: "10px", display:  entityDisplay ? 'block' : 'none', marginTop:"40px"}}
-      >
-        Get Coordinates
-      </button>
-      
-      <button
-        onClick={() => loadLocalBusiness()}
-        class="btn btn-outline-primary"
-        style={{ marginTop: "10px", display:  entityDisplay ? 'block' : 'none', marginTop:"40px"}}
-      >
-        Load Local Business
-      </button>
-      <Map ref={childRef} entityDetails={entityDetails} city={city} />
+      <Search extractEntities={extractEntities} setCity={setCity} />
+      <DisplayEntities
+        entities={entities}
+        setEntities={setEntities}
+        entityDisplay={entityDisplay}
+      />
+      <div className="flex">
+        <button
+          onClick={() => getEntityDetails()}
+          class="btn btn-outline-primary"
+          style={{
+            marginTop: "10px",
+            display: entityDisplay ? "inline-block" : "none",
+            marginTop: "40px",
+            marginRight: "20px",
+          }}
+        >
+          Get Coordinates
+        </button>
+
+        <button
+          onClick={() => loadLocalBusiness()}
+          class="btn btn-outline-primary"
+          style={{
+            marginTop: "10px",
+            display: entityDisplay ? "inline-block" : "none",
+            marginTop: "40px",
+          }}
+        >
+          Load Local Business
+        </button>
+      </div>
+
+      <Map
+        ref={childRef}
+        entityDetails={entityDetails}
+        city={city}
+        entityDisplay={entityDisplay}
+      />
     </>
   );
 }
