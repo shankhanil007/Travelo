@@ -6,7 +6,7 @@ import Login from "./components/auth/Login";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import Alert from "./components/layout/Alerts";
 import MerchantRegister from "./components/merchant/MerchantRegister";
-
+import NerExtract from "./components/dashboard/NerExtract";
 import AuthState from "./context/auth/AuthState";
 import AlertState from "./context/alert/AlertState";
 
@@ -27,6 +27,7 @@ const App = () => {
                   path="/merchant/register"
                   component={MerchantRegister}
                 />
+                <PrivateRoute exact path="/dashboard" component={NerExtract} />
               </Switch>
             </div>
           </Fragment>
