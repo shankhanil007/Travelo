@@ -62,7 +62,7 @@ const Test = (props) => {
     if (!map) initializeMap({ setMap, mapContainer });
   }, [map]);
 
-  return <div ref={el => (mapContainer.current = el)} style={{ height: "400px" }} />;
+  return <div ref={el => (mapContainer.current = el)} style={{ height: "400px"}} />;
 };
 
 export default Test;

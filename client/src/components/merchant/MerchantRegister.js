@@ -19,6 +19,8 @@ const MerchantRegister = () => {
       const [state, setState] = useState("");
       const [pincode, setPincode] = useState("");
       const [address, setAddress] = useState("");
+      const [business, setBusiness] = useState("");
+      const [description, setDescription] = useState("");
       const [latitude, setLatitude] = useState("");
       const [longitude, setLongitude] = useState("");
 
@@ -30,6 +32,8 @@ const MerchantRegister = () => {
         state:"",
         pincode:"",
         address:"",
+        business:"",
+        description:"",
         latitude:"",
         longitude:"",
       });
@@ -65,14 +69,16 @@ const onChange6 = (e) =>{
 const onChange7 = (e) =>{
   setAddress(e.target.value);
 }
-    
-      // useEffect(_=>console.log('useeffect mer', merchant), [merchant])
+
+const onChange8 = (e) =>{
+  setBusiness(e.target.value);
+}
+
+const onChange9 = (e) =>{
+  setDescription(e.target.value);
+}
       const onSubmit = async (e) => {
         e.preventDefault();
-        //console.log(merchant)
-        
-        setMerchant({name: name, email: email, phone: phone, city: city, state: state, pincode: pincode, address: address, latitude: latitude, longitude: longitude})
-        console.log(merchant)
         const config = {
             headers: {
               "Content-Type": "application/json",
@@ -81,7 +87,7 @@ const onChange7 = (e) =>{
           try {
             const res = await axios.post(
               "http://localhost:5000/api/merchant/register",
-              merchant,
+              {name: name, email: email, phone: phone, city: city, state: state, pincode: pincode, address: address, business: business, description: description, latitude: latitude, longitude: longitude},
               config
             );
             console.log(res);
@@ -91,11 +97,12 @@ const onChange7 = (e) =>{
         }
 
     return (
+      <>
         <div style={RegisterForm}>
           <h1 style={{ textAlign: "center" }}>
             Merchant <span className="text-primary">Register</span>
           </h1>
-          <form onSubmit={onSubmit}>
+          <form >
             <div className="form-group">
               <label htmlFor="name">Name</label>
               <input
@@ -180,9 +187,34 @@ const onChange7 = (e) =>{
                 required
               />
             </div>
+            <div className="form-group">
+              <label htmlFor="business">Business Name</label>
+              <input
+                class="form-control"
+                id="business"
+                type="text"
+                name="business"
+                value={business}
+                onChange={onChange8}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="description">Description</label>
+              <textarea
+                rows={5}
+                class="form-control"
+                id="description"
+                type="text"
+                name="description"
+                value={description}
+                onChange={onChange9}
+                required
+              />
+            </div>
             
             
-            <button type="submit" className="btn btn-primary mt-3" value="Register">
+            <button type="submit" className="btn btn-primary mt-3" value="Register" onClick={onSubmit}>
               Register
             </button>
           </form>
@@ -190,8 +222,10 @@ const onChange7 = (e) =>{
           {/* Map Location Picker
           */}
           {/* <LocationPicker latitude = {latitude} longitude = {longitude}/> */}
-          <Test abcd={abcd}/>
+          
         </div>
+        <Test abcd={abcd}/>
+        </>
       );
 }
 

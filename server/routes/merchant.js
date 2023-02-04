@@ -28,6 +28,8 @@ router.post(
       state,
       pincode,
       address,
+      business,
+      description,
       latitude,
       longitude,
     } = req.body;
@@ -47,21 +49,24 @@ router.post(
         state,
         pincode,
         address,
+        business,
+        description,
         latitude,
         longitude,
       });
       await merchant.save();
 
-     
-      const accountSid = ''; 
-      const authToken = ''; 
+       const accountSid = 'AC1ad9e53e42e2ead3aeed5a46c917309c'; 
+       const authToken = '1c5f5c2a4a2caf918e789a75b4fe3d02'; 
+      // const accountSid = ''; 
+      // const authToken = ''; 
       const client = require('twilio')(accountSid, authToken); 
        
       client.messages 
             .create({   
               body: 'Hey, Your business is registered. You can find yourself on: ',      
               from: 'whatsapp:+14155238886',
-               to: 'whatsapp:+91'+merchant.phone,
+               to: 'whatsapp:'+merchant.phone,
              }) 
             .then(message => console.log(message.sid)) 
             .done();

@@ -30,6 +30,14 @@ const MerchantSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  business: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
   latitude: {
     type: String,
     required: true,
