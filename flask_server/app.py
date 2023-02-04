@@ -4,6 +4,7 @@ from googlesearch import search
 import requests
 import spacy
 import time
+import wikipedia
 
 app = Flask(__name__)
 CORS(app)
@@ -108,6 +109,37 @@ def explore_city():
     entities = unique_elements(entities)
     print(entities)
     return {"entities": entities}
+
+
+#################################################
+########### TODO: api to fetch geo-details
+#################################################
+
+@app.route("/geo-details", methods=["POST"])
+def fetch_geo_details():
+    details = []
+    data = request.get_json(force=True)
+    entities = data["entities"]
+    # print(entities)
+    for ent in entities:
+        # print(ent)
+        try:
+            wiki = wikipedia.page(ent + " (place)")
+            # print(wiki.title)
+            # print(wiki.url)
+            # print(wiki.content[:1000])
+            # print(wiki.images[0])
+            geo_dict = {}
+            geo_dict = {"title": wiki.title, 
+                    "description": wiki.content[:1000],
+                    "image": wiki.images[0],
+                    "wiki_url": wiki.url}
+            details.append(geo_dict)
+        except:
+            continue
+    print(details)
+    return details
+
 
 def main():
     print(explore_city())
