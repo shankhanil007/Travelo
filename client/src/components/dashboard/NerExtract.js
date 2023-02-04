@@ -15,13 +15,15 @@ import Navbar from "../layout/Navbar";
 function NerExtract() {
   const authContext = useContext(AuthContext);
   const { user, loadUser } = authContext;
-
+  const [loading, setLoading] = useState(false);
+  const [maploading, setMapLoading] = useState(false);
   const [city, setCity] = useState("");
   const [entities, setEntities] = useState([]);
   const [entityDetails, setEntityDetails] = useState([]);
   const [entityDisplay, setEntityDisplay] = useState(false);
   const extractEntities = async (search) => {
     setCity(search.city);
+    setLoading(true);
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -35,12 +37,14 @@ function NerExtract() {
       );
       setEntities(res.data.entities);
       setEntityDisplay(true);
+      setLoading(false);
     } catch (err) {
       console.log(err);
     }
   };
 
   const getEntityDetails = async () => {
+    setMapLoading(true);
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -52,6 +56,7 @@ function NerExtract() {
         entities,
         config
       );
+      setMapLoading(false);
       setEntityDetails(res.data);
 
       console.log(entityDetails);
@@ -75,6 +80,7 @@ function NerExtract() {
         entities={entities}
         setEntities={setEntities}
         entityDisplay={entityDisplay}
+        loading={loading}
       />
       <div className="flex">
         <button
@@ -108,6 +114,7 @@ function NerExtract() {
         entityDetails={entityDetails}
         city={city}
         entityDisplay={entityDisplay}
+        maploading={maploading}
       />
     </>
   );

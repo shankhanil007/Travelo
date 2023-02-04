@@ -12,6 +12,7 @@ import "../../App.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
 import "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css";
+import Spinner from "../layout/Spinner";
 
 const styles = {
   width: "100vw",
@@ -130,10 +131,10 @@ const Map = forwardRef((props, ref) => {
               .setPopup(
                 new mapboxgl.Popup({ offset: 25 }) // add popups
                   .setHTML(
-                    `<h3>${details.name}</h3>
-                    <div style="height: 200px; overflow-y: scroll; height: 300px;">
-                    <img src="https://images.unsplash.com/photo-1670680307288-dae87434670e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image" style="width: 100%; height: 100px;">
-                    <p> ${details.name}</p>
+                    `<h3>${details[i].business}</h3>
+                    <div style="height: 100px; overflow-y: scroll; height: 200px;">
+                    <img src="${details[i].url}" alt="Image" style="width: 100%; height: 100px;">
+                    <p> ${details[i].description}</p>
                   </div>
                     `
                   )
@@ -149,6 +150,7 @@ const Map = forwardRef((props, ref) => {
     console.log(props.city);
   };
 
+  if (props.maploading) return <Spinner />;
   return (
     <>
       <div
