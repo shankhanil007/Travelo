@@ -9,17 +9,20 @@ import MerchantRegister from "./components/merchant/MerchantRegister";
 import NerExtract from "./components/dashboard/NerExtract";
 import AuthState from "./context/auth/AuthState";
 import AlertState from "./context/alert/AlertState";
+import Landing from "./components/landing/Landing";
 
 const App = () => {
   return (
+
     <AuthState>
       <AlertState>
         <Router>
           <Fragment>
-            <Navbar />
+            {/* <Navbar /> */}
             <div className="container">
               <Alert />
               <Switch>
+                <Route exact path="/" component={Landing} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />
                 <Route

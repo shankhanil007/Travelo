@@ -10,8 +10,10 @@ import Search from "./Search";
 import AuthContext from "../../context/auth/authContext";
 import DisplayEntities from "./DisplayEntities";
 import Map from "./Map";
+import Navbar from '../layout/Navbar'
 
 function NerExtract() {
+  
   const authContext = useContext(AuthContext);
   const { user, loadUser } = authContext;
 
@@ -65,6 +67,7 @@ function NerExtract() {
 
   return (
     <>
+      <Navbar />
       <Search extractEntities={extractEntities} setCity={setCity} />
       <DisplayEntities entities={entities} setEntities={setEntities} />
       <button

@@ -50,6 +50,7 @@ const Search = (props) => {
               name="link"
               onChange={onChange}
               placeholder="Link to a travel blog..."
+              required
             />
           </div>
         </div>
