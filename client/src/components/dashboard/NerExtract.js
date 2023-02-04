@@ -1,4 +1,10 @@
-import React, { Fragment, useState, useContext, useEffect } from "react";
+import React, {
+  Fragment,
+  useState,
+  useContext,
+  useEffect,
+  useRef,
+} from "react";
 import axios from "axios";
 import Search from "./Search";
 import AuthContext from "../../context/auth/authContext";
@@ -42,10 +48,14 @@ function NerExtract() {
         config
       );
       setEntityDetails(res.data);
+      console.log(entityDetails);
+      childRef.current.getAlert();
     } catch (err) {
       console.log(err);
     }
   };
+
+  const childRef = useRef();
 
   return (
     <>
@@ -58,7 +68,7 @@ function NerExtract() {
       >
         Get Coordinates
       </button>
-      <Map />
+      <Map ref={childRef} entityDetails={entityDetails} />
     </>
   );
 }
